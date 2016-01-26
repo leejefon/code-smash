@@ -9,12 +9,15 @@ define([
 	'angular',
 	'angularLoadingBar',
 	'main/Controller',
-    'main/Routes'
+    'main/Routes',
+	'main/directives/TestWindow',
+	'main/directives/EditorWindow',
 ], function (angular) {
 
 	return angular.module('Main', [
 		'chieffancypants.loadingBar',
 		'Main.controllers',
-        'Main.routes'
+        'Main.routes',
+		'Main.directives'
 	]);
 });

@@ -9,11 +9,18 @@ require.config({
     paths: {
         jquery: '../vendor/jquery/dist/jquery',
         toastr: '../vendor/toastr/toastr',
-        bootstrap: '../vendor/bootstrap/dist/js/bootstrap.min',
+        firebase: '../vendor/firebase/firebase',
+        ace: '../vendor/ace-builds/src-min-noconflict/ace',
+        aceModeJavaScript: '../vendor/ace-builds/src-min-noconflict/mode-javascript',
 
         angular: '../vendor/angular/angular',
         angularUIRouter: '../vendor/angular-ui-router/release/angular-ui-router.min',
-        angularLoadingBar: '../vendor/angular-loading-bar/build/loading-bar'
+        angularUIAce: '../vendor/angular-ui-ace/ui-ace.min',
+        angularLoadingBar: '../vendor/angular-loading-bar/build/loading-bar',
+        angularFire: '../vendor/angularfire/dist/angularfire.min',
+
+        mocha: '../vendor/mocha/mocha',
+        chai: '../vendor/chai/chai',
     },
     shim: {
         jquery: { exports: '$' },
@@ -21,7 +28,12 @@ require.config({
 
         angular: { exports: 'angular', deps: ['jquery'] },
         angularUIRouter: ['angular'],
-        angularLoadingBar: ['angular']
+        angularUIAce: ['angular', 'ace', 'aceModeJavaScript'],
+        angularLoadingBar: ['angular'],
+        angularFire: ['angular', 'firebase'],
+
+        mocha: { exports: 'mocha' },
+        chai: { exports: 'chai' }
     },
     priority: ['jquery', 'angular']
 });
