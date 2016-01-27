@@ -28,6 +28,7 @@
     "mocha": "~2.3.4",
     "requirejs": "~2.1.22",
     "toastr": "~2.1.2",
-    "angular-ui-ace": "~0.2.3"
+    "angular-ui-ace": "~0.2.3",
+    "angular-cookies": "~1.4.9"
   }
 }

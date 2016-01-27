@@ -14,6 +14,7 @@ require.config({
         aceModeJavaScript: '../vendor/ace-builds/src-min-noconflict/mode-javascript',
 
         angular: '../vendor/angular/angular',
+        angularCookies: '../vendor/angular-cookies/angular-cookies.min',
         angularUIRouter: '../vendor/angular-ui-router/release/angular-ui-router.min',
         angularUIAce: '../vendor/angular-ui-ace/ui-ace.min',
         angularLoadingBar: '../vendor/angular-loading-bar/build/loading-bar',

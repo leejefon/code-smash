@@ -5,11 +5,11 @@
  * @created :: 2016/01/25
  */
 
-define(['angular'], function (angular) {
+define(['angular', 'auth/Service'], function (angular) {
 
-	return angular.module('Main.controllers', [])
+	return angular.module('Main.controllers', ['Auth'])
 
-		.controller('MainController', ['$scope', '$state', '$stateParams', function ($scope, $state, $stateParams) {
+		.controller('MainController', ['$scope', '$rootScope', '$state', '$stateParams', 'Auth', function ($scope, $rootScope, $state, $stateParams, Auth) {
 
 			$scope.home = function () {
 
@@ -17,6 +17,14 @@ define(['angular'], function (angular) {
 
 			$scope.game = function () {
 
+			};
+
+			$scope.loginFacebook = function () {
+				Auth.login();
+			};
+
+			$scope.newGame = function () {
+				$state.go('game', { gameSessionId: 'randomStr' });
 			};
 
 			$scope.init = (function () {

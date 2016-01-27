@@ -9,22 +9,26 @@ define(['angular', 'angularUIRouter'], function (angular) {
 
 	return angular.module('Main.routes', ['ui.router'])
 
-		.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+		.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
 			$stateProvider
 				.state('home', {
 					url: '/',
 					templateUrl: '/js/templates/main/partials/home.html',
 					controller: 'MainController',
-					action: 'home'
+					action: 'home',
+					requireLogin: false
 				})
 
                 .state('game', {
 					url: '/:gameSessionId',
 					templateUrl: '/js/templates/main/partials/game.html',
 					controller: 'MainController',
-					action: 'game'
+					action: 'game',
+					requireLogin: true
 				});
 
 			$urlRouterProvider.otherwise('/');
+
+			// $locationProvider.html5Mode(true);
 		}]);
 });
