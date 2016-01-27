@@ -5,16 +5,19 @@
  * @created :: 2016/01/25
  */
 
-define(['main/services', 'mocha'], function (MainServices, mocha) {
+define(['main/services', 'mocha', 'angularFire'], function (MainServices, mocha) {
 
 	return MainServices
 
-		.factory('CodeProblem', ['$q', function ($q) {
+		.factory('CodeProblem', ['$q', '$firebaseObject', function ($q, $firebaseObject) {
+
+			var ref = new Firebase("https://code-smash.firebaseio.com");
+
 			var currentProblem = {
 				name: '',
+				func: '',
 				text: '',
-				userSolution: '',
-				func: ''
+				userSolution: ''
 			};
 
 			mocha.setup('bdd');
@@ -43,7 +46,7 @@ define(['main/services', 'mocha'], function (MainServices, mocha) {
 					});
 				},
 				listProblems: [
-					'q1'
+					'q1', 'q2', 'q3', 'q4', 'q5'
 				]
             };
 		}]);

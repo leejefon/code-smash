@@ -1,0 +1,12 @@
+{
+  "firebase": "code-smash",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "package.json",
+    "bower.json",
+    "gulpfile.js",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

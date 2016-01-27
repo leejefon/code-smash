@@ -19,7 +19,7 @@ define(['angular', 'angularUIRouter'], function (angular) {
 				})
 
                 .state('game', {
-					url: '/:gameId',
+					url: '/:gameSessionId',
 					templateUrl: '/js/templates/main/partials/game.html',
 					controller: 'MainController',
 					action: 'game'

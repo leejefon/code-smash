@@ -8,5 +8,5 @@
 define([
     'angular'
 ], function (angular) {
-    return angular.module('Main.services', []);
+    return angular.module('Main.services', ['firebase']);
 });
