@@ -13,6 +13,23 @@ define(['auth/app', 'angularFire', 'angularCookies'], function (Auth) {
 
 			var ref = new Firebase("https://code-smash.firebaseio.com");
 
+			function _saveUserObject (userData) {
+				var userRef = ref.child("users");
+
+				userRef.once('value', function (snapshot) {
+					if (!snapshot.hasChild(userData.uid)) {
+						var user = {};
+						user[userData.uid] = _omit(userData, ['token', 'auth', 'expires', 'facebook.accessToken']);
+						user[userData.uid].record = { win: 0, lose: 0 };
+						userRef.set(user);
+					}
+				});
+			}
+
+			function _omit (obj, props) {
+				return obj;
+			}
+
             return {
                 login: function (provier) {
 					provider = provier || 'facebook';
@@ -21,6 +38,8 @@ define(['auth/app', 'angularFire', 'angularCookies'], function (Auth) {
 					auth.$authWithOAuthPopup(provider).then(function (authData) {
 						$rootScope.currentUser = authData.facebook;
 						$cookies.put('user', JSON.stringify(authData.facebook));
+
+						_saveUserObject(authData);
 
 						if ($rootScope.originalState) {
 							$state.go($rootScope.originalState.state, $rootScope.originalState.params);
