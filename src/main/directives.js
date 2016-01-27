@@ -8,5 +8,5 @@
 define([
     'angular'
 ], function (angular) {
-    return angular.module('Main.directives', ['ui.ace']);
+    return angular.module('Main.directives', ['ui.ace', 'Main.services']);
 });

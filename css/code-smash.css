@@ -1,0 +1,19 @@
+html, body {
+    height: 100%
+}
+
+.ace_editor  {
+    height: 100%;
+}
+
+.max-height {
+    height: 100%;
+}
+
+#mocha-stats {
+    position: relative;
+}
+
+#mocha-stats .progress {
+    display: none;
+}

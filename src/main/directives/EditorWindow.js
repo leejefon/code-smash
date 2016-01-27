@@ -5,7 +5,11 @@
  * @created :: 2016/01/25
  */
 
-define(['main/directives', 'angularUIAce'], function (MainDirectives) {
+define([
+    'main/directives',
+    'angularUIAce',
+    'main/services/CodeProblem'
+], function (MainDirectives) {
 
     return MainDirectives
 
@@ -14,14 +18,18 @@ define(['main/directives', 'angularUIAce'], function (MainDirectives) {
                 restrict: 'E',
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-editorWindow.html',
-                controller: ['$scope', 'CodeProblem', 'GameAction', function ($scope, CodeProblem, GameAction) {
+                controller: ['$scope', 'CodeProblem', function ($scope, CodeProblem) {
                     $scope.aceOptions = {
                         mode: 'javascript'
                     };
 
-                    $scope.code = 'function main () { \n' +
-                        '    // put your code here\n' +
-                        '}\n';
+                    CodeProblem.loadProblem('q1').then(function (problem) {
+                        $scope.code = problem.text;
+
+                        $scope.$watch('code', function (newValue, oldValue) {
+                            CodeProblem.updateUserSolution(newValue);
+                        });
+                    });
                 }],
                 link: function (scope, elem, attrs) {
 
