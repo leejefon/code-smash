@@ -7,7 +7,7 @@
 
 define([
     'main/directives',
-    'main/services/GameAction'
+    'main/services/Game'
 ], function (MainDirectives) {
 
     return MainDirectives
@@ -17,7 +17,7 @@ define([
                 restrict: 'E',
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-gameWindow.html',
-                controller: ['$scope', 'GameAction', function ($scope, GameAction) {
+                controller: ['$scope', 'Game', function ($scope, Game) {
 
                 }],
                 link: function (scope, elem, attrs) {

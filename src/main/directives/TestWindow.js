@@ -8,7 +8,7 @@
 define([
     'main/directives',
     'main/services/CodeProblem',
-    'main/services/GameAction'
+    'main/services/Game'
 ], function (MainDirectives) {
 
     return MainDirectives
@@ -18,11 +18,15 @@ define([
                 restrict: 'E',
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-testWindow.html',
-                controller: ['$scope', 'CodeProblem', 'GameAction', function ($scope, CodeProblem, GameAction) {
+                controller: ['$scope', 'CodeProblem', 'Game', function ($scope, CodeProblem, Game) {
                     $scope.runTest = function () {
                         CodeProblem.runTest().then(function (result) {
                             console.log(result);
                         });
+                    };
+
+                    $scope.nextProblem = function () {
+                        return false;
                     };
                 }],
                 link: function (scope, elem, attrs) {

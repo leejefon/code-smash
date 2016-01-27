@@ -10,8 +10,9 @@ define([
 	'angularLoadingBar',
 	'main/Controller',
     'main/Routes',
+	'main/directives/GameWindow',
 	'main/directives/TestWindow',
-	'main/directives/EditorWindow',
+	'main/directives/EditorWindow'
 ], function (angular) {
 
 	return angular.module('Main', [

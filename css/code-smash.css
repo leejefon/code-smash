@@ -10,6 +10,23 @@ html, body {
     height: 100%;
 }
 
+#game-window {
+    height: 60%;
+    border: 1px solid #DDD;
+    padding: 15px;
+}
+
+#test-window {
+    height: 40%;
+    overflow-y: scroll;
+    border: 1px solid #DDD;
+    padding: 30px 15px;
+}
+
+#mocha {
+    margin: 0;
+}
+
 #mocha-stats {
     position: relative;
 }
