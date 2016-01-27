@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var rjs = require('gulp-requirejs');
 var uglify = require('gulp-uglify');
+var webserver = require('gulp-webserver');
 
 var paths = {
 	assetsToWatch: [
@@ -27,9 +28,17 @@ gulp.task('extractTemplates', function () {
 		.pipe(gulp.dest('js/templates'));
 });
 
+gulp.task('webserver', function() {
+	gulp.src('.')
+		.pipe(webserver({
+			livereload: true,
+			directoryListing: true,
+			open: true
+		}));
+});
 
 gulp.task('watch', function () {
 	gulp.watch(paths.assetsToWatch, ['uglifyJs', 'extractTemplates']);
 });
 
-gulp.task('default', ['uglifyJs', 'extractTemplates', 'watch']);
+gulp.task('default', ['uglifyJs', 'extractTemplates', 'watch', 'webserver']);
