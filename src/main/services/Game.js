@@ -15,27 +15,22 @@ define(['main/services'], function (MainServices) {
 
 			var availableGames = ['default'];
 
+			var availableGameObjects = [];
+
+			require(availableGames.map(function (game) {
+				return 'games/' + game + '/index';
+			}), function () {
+				availableGameObjects = arguments;
+
+				function loadCSS (href) {
+				     var cssLink = $("<link rel='stylesheet' type='text/css' href='" + href + "'>");
+				     $("head").append(cssLink);
+				}
+			});
+
 			function _genSid (len) {
 				len = len || 64;
 				return Math.random().toString(35).substr(2, len);
-			}
-
-			function _selectGame () {
-				return {
-					name: 'default'
-				};
-			}
-
-			function _selectBackground () {
-				return {
-					name: 'default'
-				};
-			}
-
-			function _selectCharacter () {
-				return {
-					name: 'default'
-				};
 			}
 
             return {

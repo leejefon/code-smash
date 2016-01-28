@@ -40705,7 +40705,7 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 				};
 
 				$scope.newGame = function () {
-					Game.setup({
+					Game.createGame({
 						uid: $rootScope.currentUser.uid,
 						problems: CodeProblem.getRandomProblems()
 					}).then(function (sessionId) {
@@ -40811,27 +40811,24 @@ define('main/services/Game',['main/services'], function (MainServices) {
 
 			var gameRef = new Firebase('https://code-smash.firebaseio.com/games')
 
+			var availableGames = ['default'];
+
+			var availableGameObjects = [];
+
+			require(availableGames.map(function (game) {
+				return 'games/' + game + '/index';
+			}), function () {
+				availableGameObjects = arguments;
+
+				function loadCSS (href) {
+				     var cssLink = $("<link rel='stylesheet' type='text/css' href='" + href + "'>");
+				     $("head").append(cssLink);
+				}
+			});
+
 			function _genSid (len) {
 				len = len || 64;
 				return Math.random().toString(35).substr(2, len);
-			}
-
-			function _selectGame () {
-				return {
-					name: 'default'
-				};
-			}
-
-			function _selectBackground () {
-				return {
-					name: 'default'
-				};
-			}
-
-			function _selectCharacter () {
-				return {
-					name: 'default'
-				};
 			}
 
             return {
@@ -40839,7 +40836,7 @@ define('main/services/Game',['main/services'], function (MainServices) {
 					var sessionRef = new Firebase('https://code-smash.firebaseio.com/games/' + sessionId);
 					return $firebaseObject(sessionRef).$bindTo(scope, 'gameData');
 				},
-				setup: function (params) {
+				createGame: function (params) {
 					var game = {
 						sessionId: _genSid(),
 						problems: params.problems,
@@ -40891,7 +40888,7 @@ define('main/services/Game',['main/services'], function (MainServices) {
 				attack: function () {
 
 				},
-				dodge: function () {
+				hurt: function () {
 
 				},
 				win: function () {
@@ -40899,10 +40896,7 @@ define('main/services/Game',['main/services'], function (MainServices) {
 				},
 				lose: function () {
 
-				},
-				listGames: [
-					'default'
-				]
+				}
             };
 		}]);
 });
@@ -53393,13 +53387,13 @@ window.mocha = mocha;
  * @created :: 2016/01/25
  */
 
-define('main/services/CodeProblem',['main/services', 'mocha', 'angularFire'], function (MainServices, mocha) {
+define('main/services/CodeProblem',['main/services', 'mocha'], function (MainServices, mocha) {
 
 	return MainServices
 
-		.factory('CodeProblem', ['$q', '$firebaseObject', function ($q, $firebaseObject) {
+		.factory('CodeProblem', ['$q', function ($q) {
 
-			var ref = new Firebase("https://code-smash.firebaseio.com");
+			var availableProblems = ['q1', 'q2', 'q3', 'q4', 'q5'];
 
 			var currentProblem = {
 				name: '',
@@ -53407,10 +53401,6 @@ define('main/services/CodeProblem',['main/services', 'mocha', 'angularFire'], fu
 				text: '',
 				userSolution: ''
 			};
-
-			var availableProblems = [
-				'q1', 'q2', 'q3', 'q4', 'q5'
-			];
 
 			mocha.setup('bdd');
 
