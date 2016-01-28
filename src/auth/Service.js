@@ -19,7 +19,7 @@ define(['auth/app', 'angularFire', 'angularCookies'], function (Auth) {
 				userRef.once('value', function (snapshot) {
 					if (!snapshot.hasChild(userData.uid)) {
 						var user = {};
-						user[userData.uid] = _omit(userData, ['token', 'auth', 'expires', 'facebook.accessToken']);
+						user[userData.uid] = _omit(userData, ['token', 'expires', 'facebook.accessToken']);
 						user[userData.uid].record = { win: 0, lose: 0 };
 						userRef.set(user);
 					}
@@ -27,6 +27,9 @@ define(['auth/app', 'angularFire', 'angularCookies'], function (Auth) {
 			}
 
 			function _omit (obj, props) {
+				delete obj.token;
+				delete obj.expires;
+				delete obj.facebook.accessToken;
 				return obj;
 			}
 
@@ -36,8 +39,8 @@ define(['auth/app', 'angularFire', 'angularCookies'], function (Auth) {
 
 					var auth = $firebaseAuth(ref);
 					auth.$authWithOAuthPopup(provider).then(function (authData) {
-						$rootScope.currentUser = authData.facebook;
-						$cookies.put('user', JSON.stringify(authData.facebook));
+						$rootScope.currentUser = authData;
+						$cookies.put('user', JSON.stringify(authData));
 
 						_saveUserObject(authData);
 

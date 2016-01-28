@@ -5,13 +5,13 @@
  * @created :: 2016/01/25
  */
 
-define(['main/services', 'mocha', 'angularFire'], function (MainServices, mocha) {
+define(['main/services', 'mocha'], function (MainServices, mocha) {
 
 	return MainServices
 
-		.factory('CodeProblem', ['$q', '$firebaseObject', function ($q, $firebaseObject) {
+		.factory('CodeProblem', ['$q', function ($q) {
 
-			var ref = new Firebase("https://code-smash.firebaseio.com");
+			var availableProblems = ['q1', 'q2', 'q3', 'q4', 'q5'];
 
 			var currentProblem = {
 				name: '',
@@ -23,6 +23,17 @@ define(['main/services', 'mocha', 'angularFire'], function (MainServices, mocha)
 			mocha.setup('bdd');
 
             return {
+				getRandomProblems: function (number, level) {
+					number = number || 5;
+					level = level || 'easy';
+
+					if (number > availableProblems.length) {
+						number = availableProblems.length;
+					}
+
+					// NOTE: Shuffle array: https://css-tricks.com/snippets/javascript/shuffle-array/
+					return availableProblems.sort(function () { return 0.5 - Math.random(); }).slice(0, number);
+				},
 				loadProblem: function (name) {
 					return $q(function (resolve, reject) {
 						require(['problems/' + name + '/prob'], function (problem) {
@@ -44,10 +55,7 @@ define(['main/services', 'mocha', 'angularFire'], function (MainServices, mocha)
 							resolve(stats);
 						});
 					});
-				},
-				listProblems: [
-					'q1', 'q2', 'q3', 'q4', 'q5'
-				]
+				}
             };
 		}]);
 });

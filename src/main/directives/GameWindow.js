@@ -18,7 +18,7 @@ define([
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-gameWindow.html',
                 controller: ['$scope', 'Game', function ($scope, Game) {
-
+                    
                 }],
                 link: function (scope, elem, attrs) {
 

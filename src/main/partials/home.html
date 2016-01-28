@@ -1,6 +1,6 @@
 <div>
-    <h3 ng-if="$root.currentUser">Hello, {{ $root.currentUser.displayName }}</h3>
+    <h3 ng-if="$root.currentUser">Hello, {{ $root.currentUser[$root.currentUser.provider].displayName }}</h3>
 
     <button class="btn btn-primary" ng-click="loginFacebook()" ng-if="!$root.currentUser">Login Facebook</button>
-    <button class="btn btn-primary" ng-click="newGame()">New Game</button>
+    <button class="btn btn-primary" ng-click="newGame()" ng-if="$root.currentUser">New Game</button>
 </div>
