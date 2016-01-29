@@ -19,6 +19,8 @@ define(['main/services'], function (MainServices) {
 
 			var currentGameObject = null;
 
+			var currentPlayerId = '';
+
 			require(availableGames.map(function (game) {
 				return 'games/' + game + '/index';
 			}), function () {
@@ -50,6 +52,9 @@ define(['main/services'], function (MainServices) {
 					var sessionRef = new Firebase('https://code-smash.firebaseio.com/games/' + sessionId);
 					return $firebaseObject(sessionRef).$bindTo(scope, 'gameData');
 				},
+				currentPlayerId: function () {
+					return currentPlayerId;
+				},
 				createGame: function (params) {
 					var game = {
 						sessionId: _genSid(),
@@ -69,6 +74,7 @@ define(['main/services'], function (MainServices) {
 					};
 
 					return $q(function (resolve, reject) {
+						currentPlayerId = 'player1';
 						currentGameObject = _randomElement(availableGameObjects);
 						game.settings.game = currentGameObject.name;
 						game.settings.background = _randomElement(currentGameObject.backgrounds.list);
@@ -89,6 +95,7 @@ define(['main/services'], function (MainServices) {
 									// NOTE: already got 2 players
 									reject();
 								} else {
+									currentPlayerId = 'player2';
 									availableGameObjects.forEach(function (gameObj) {
 										if (gameObj.name === game.settings.game) {
 											currentGameObject = gameObj;
@@ -128,10 +135,26 @@ define(['main/services'], function (MainServices) {
 				gameUpdate: function (newState, oldState) {
 					if (!oldState.players.player2 && newState.players.player2) {
 						currentGameObject.characters[newState.players.player2.character].setPlayer('player2');
-					} else if (oldState.players.player1 && newState.players.player1 && oldState.players.player1.hp !== newState.players.player1.hp) {
+					}
+
+					if (oldState.players.player1 && newState.players.player1 && oldState.players.player1.hp !== newState.players.player1.hp) {
 						currentGameObject.characters[newState.players.player1.character].attack('player2', 'player1');
 					} else if (oldState.players.player2 && newState.players.player2 && oldState.players.player2.hp !== newState.players.player2.hp) {
 						currentGameObject.characters[newState.players.player2.character].attack('player1', 'player2');
+					}
+
+					if (newState.players.player1 && newState.players.player1.hp === 0) {
+						if (currentPlayerId === 'player1') {
+							currentGameObject.characters[newState.players.player1.character].lose();
+						} else {
+							currentGameObject.characters[newState.players.player2.character].win();
+						}
+					} else if (newState.players.player2 && newState.players.player2.hp === 0) {
+						if (currentPlayerId === 'player2') {
+							currentGameObject.characters[newState.players.player2.character].lose();
+						} else {
+							currentGameObject.characters[newState.players.player1.character].win();
+						}
 					}
 				}
             };

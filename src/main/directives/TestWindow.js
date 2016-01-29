@@ -18,7 +18,7 @@ define([
                 restrict: 'E',
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-testWindow.html',
-                controller: ['$scope', '$rootScope', 'CodeProblem', function ($scope, $rootScope, CodeProblem) {
+                controller: ['$scope', '$rootScope', 'CodeProblem', 'Game', function ($scope, $rootScope, CodeProblem, Game) {
                     $scope.runTest = function () {
                         CodeProblem.runTest().then(function (result) {
                             console.log(result);
@@ -26,9 +26,7 @@ define([
                     };
 
                     $scope.nextProblem = function () {
-                        // TODO: update hp, but need to figure out which player i am now $rootScope.gameData
-                        console.log($rootScope.playerId);
-                        if ($rootScope.playerId === 'player1') {
+                        if (Game.currentPlayerId() === 'player1') {
                             $rootScope.gameData.players['player2'].hp -= 25;
                         } else {
                             $rootScope.gameData.players['player1'].hp -= 25;

@@ -17,6 +17,12 @@ define(['jquery'], function ($) {
                 $("#" + opponentId).addClass("stand");
                 $("#" + opponentId).removeClass("hurt");
             }, 900);
+        },
+        win: function () {
+            console.log('I won');
+        },
+        lose: function () {
+            console.log('I lost');
         }
     };
 
@@ -36,6 +42,12 @@ define(['jquery'], function ($) {
                 $("#" + opponentId).addClass("stand");
                 $("#" + opponentId).removeClass("hurt");
             }, 900);
+        },
+        win: function () {
+            console.log('I won');
+        },
+        lose: function () {
+            console.log('I lost');
         }
     };
 

@@ -19,7 +19,6 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 				$scope.game = function () {
 					if (!$rootScope.gameData) {
 						Game.retrieveGame($stateParams.gameSessionId, $rootScope.currentUser.uid).then(function (sessionId) {
-							$rootScope.playerId = 'player2';
 							return Game.bindGameData($rootScope, sessionId);
 						}).then(function () {
 							// console.log($rootScope.gameData);
@@ -41,7 +40,6 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 						uid: $rootScope.currentUser.uid,
 						problems: CodeProblem.getRandomProblems()
 					}).then(function (sessionId) {
-						$rootScope.playerId = 'player1';
 						return Game.bindGameData($rootScope, sessionId);
 					}).then(function () {
 						$rootScope.$watch('gameData', function (newVal, oldVal) {
