@@ -68,9 +68,7 @@ define(['main/services'], function (MainServices) {
 						game.settings.background = _randomElement(currentGameObject.backgrounds.list);
 						game.players.player1.character = _randomElement(currentGameObject.characters.list);
 
-						var newGame = {};
-						newGame[game.sessionId] = game;
-						gameRef.set(newGame);
+						gameRef.child(game.sessionId).set(game);
 						resolve(game.sessionId);
 					});
 				},

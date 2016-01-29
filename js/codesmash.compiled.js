@@ -40871,9 +40871,7 @@ define('main/services/Game',['main/services'], function (MainServices) {
 						game.settings.background = _randomElement(currentGameObject.backgrounds.list);
 						game.players.player1.character = _randomElement(currentGameObject.characters.list);
 
-						var newGame = {};
-						newGame[game.sessionId] = game;
-						gameRef.set(newGame);
+						gameRef.child(game.sessionId).set(game);
 						resolve(game.sessionId);
 					});
 				},
@@ -40923,11 +40921,10 @@ define('main/services/Game',['main/services'], function (MainServices) {
 						});
 					});
 				},
-				loadPlayer: function (player) {
-					currentGameObject.characters[player.character].setPlayer('player2');
-				},
-				gameUpdate: function () {
-
+				gameUpdate: function (newState, oldState) {
+					if (!oldState.players.player2 && newState.players.player2) {
+						currentGameObject.characters[newState.players.player2.character].setPlayer('player2');
+					}
 				},
 				win: function () {
 
