@@ -19,10 +19,13 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 				$scope.game = function () {
 					if (!$rootScope.gameData) {
 						Game.retrieveGame($stateParams.gameSessionId, $rootScope.currentUser.uid).then(function (sessionId) {
+							$rootScope.playerId = 'player2';
 							return Game.bindGameData($rootScope, sessionId);
 						}).then(function () {
 							// console.log($rootScope.gameData);
-							// TODO: watch gameData
+							$rootScope.$watch('gameData', function (newVal, oldVal) {
+								Game.gameUpdate(newVal, oldVal);
+							}, true);
 						}).catch(function () {
 							toastr.error('Game not found');
 						});
@@ -38,12 +41,12 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 						uid: $rootScope.currentUser.uid,
 						problems: CodeProblem.getRandomProblems()
 					}).then(function (sessionId) {
+						$rootScope.playerId = 'player1';
 						return Game.bindGameData($rootScope, sessionId);
 					}).then(function () {
-						// TODO: watch gameData
 						$rootScope.$watch('gameData', function (newVal, oldVal) {
 							Game.gameUpdate(newVal, oldVal);
-						});
+						}, true);
 
 						$state.go('game', { gameSessionId: $rootScope.gameData.sessionId });
 					});

@@ -40691,10 +40691,13 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 				$scope.game = function () {
 					if (!$rootScope.gameData) {
 						Game.retrieveGame($stateParams.gameSessionId, $rootScope.currentUser.uid).then(function (sessionId) {
+							$rootScope.playerId = 'player2';
 							return Game.bindGameData($rootScope, sessionId);
 						}).then(function () {
 							// console.log($rootScope.gameData);
-							// TODO: watch gameData
+							$rootScope.$watch('gameData', function (newVal, oldVal) {
+								Game.gameUpdate(newVal, oldVal);
+							}, true);
 						}).catch(function () {
 							toastr.error('Game not found');
 						});
@@ -40710,12 +40713,12 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 						uid: $rootScope.currentUser.uid,
 						problems: CodeProblem.getRandomProblems()
 					}).then(function (sessionId) {
+						$rootScope.playerId = 'player1';
 						return Game.bindGameData($rootScope, sessionId);
 					}).then(function () {
-						// TODO: watch gameData
 						$rootScope.$watch('gameData', function (newVal, oldVal) {
 							Game.gameUpdate(newVal, oldVal);
-						});
+						}, true);
 
 						$state.go('game', { gameSessionId: $rootScope.gameData.sessionId });
 					});
@@ -40838,8 +40841,14 @@ define('main/services/Game',['main/services'], function (MainServices) {
 				return Math.random().toString(35).substr(2, len);
 			}
 
-			function _randomElement (arr) {
-			    return arr[Math.floor(Math.random() * arr.length)];
+			function _randomElement (arr, exclude) {
+				if (typeof exclude === 'string') {
+					exclude = [exclude];
+				}
+				exclude = exclude || [];
+			    return arr.filter(function (item) {
+					return exclude.indexOf(item) === -1;
+				})[Math.floor(Math.random() * (arr.length - exclude.length))];
 			};
 
             return {
@@ -40882,7 +40891,8 @@ define('main/services/Game',['main/services'], function (MainServices) {
 							if (snapshot.hasChild(sessionId)) {
 								var game = snapshot.val()[sessionId];
 
-								if (game.players.player2) { // NOTE: already got 2 players
+								if (game.status === 'PLAYING') {
+									// NOTE: already got 2 players
 									reject();
 								} else {
 									availableGameObjects.forEach(function (gameObj) {
@@ -40893,7 +40903,7 @@ define('main/services/Game',['main/services'], function (MainServices) {
 
 									game.players.player2 = {
 										uid: uid,
-										character: _randomElement(currentGameObject.characters.list),
+										character: _randomElement(currentGameObject.characters.list, game.players.player1.character),
 										hp: 100
 									};
 									game.status = 'PLAYING';
@@ -40924,13 +40934,11 @@ define('main/services/Game',['main/services'], function (MainServices) {
 				gameUpdate: function (newState, oldState) {
 					if (!oldState.players.player2 && newState.players.player2) {
 						currentGameObject.characters[newState.players.player2.character].setPlayer('player2');
+					} else if (oldState.players.player1 && newState.players.player1 && oldState.players.player1.hp !== newState.players.player1.hp) {
+						currentGameObject.characters[newState.players.player1.character].attack('player2', 'player1');
+					} else if (oldState.players.player2 && newState.players.player2 && oldState.players.player2.hp !== newState.players.player2.hp) {
+						currentGameObject.characters[newState.players.player2.character].attack('player1', 'player2');
 					}
-				},
-				win: function () {
-
-				},
-				lose: function () {
-
 				}
             };
 		}]);
@@ -53510,7 +53518,7 @@ define('main/directives/TestWindow',[
                 restrict: 'E',
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-testWindow.html',
-                controller: ['$scope', 'CodeProblem', 'Game', function ($scope, CodeProblem, Game) {
+                controller: ['$scope', '$rootScope', 'CodeProblem', function ($scope, $rootScope, CodeProblem) {
                     $scope.runTest = function () {
                         CodeProblem.runTest().then(function (result) {
                             console.log(result);
@@ -53518,7 +53526,13 @@ define('main/directives/TestWindow',[
                     };
 
                     $scope.nextProblem = function () {
-                        return false;
+                        // TODO: update hp, but need to figure out which player i am now $rootScope.gameData
+                        console.log($rootScope.playerId);
+                        if ($rootScope.playerId === 'player1') {
+                            $rootScope.gameData.players['player2'].hp -= 25;
+                        } else {
+                            $rootScope.gameData.players['player1'].hp -= 25;
+                        }
                     };
                 }],
                 link: function (scope, elem, attrs) {
