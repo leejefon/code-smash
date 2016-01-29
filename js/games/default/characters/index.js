@@ -2,20 +2,40 @@
 define(['jquery'], function ($) {
 
     var kirby = {
-        attack: function () {
-
+        setPlayer: function (playerId) {
+            $('#' + playerId).addClass('kirby stand');
         },
-        hurt: function () {
+        attack: function (playerId, opponentId) {
+            $("#" + playerId).removeClass("stand");
+            $("#" + playerId).addClass("punch");
+            $("#" + opponentId).removeClass("stand");
+            $("#" + opponentId).addClass("hurt");
 
+            setTimeout(function() {
+                $("#" + playerId).addClass("stand");
+                $("#" + playerId).removeClass("punch");
+                $("#" + opponentId).addClass("stand");
+                $("#" + opponentId).removeClass("hurt");
+            }, 900);
         }
     };
 
     var mario = {
-        attack: function () {
-
+        setPlayer: function (playerId) {
+            $('#' + playerId).addClass('mario stand');
         },
-        hurt: function () {
+        attack: function (playerId, opponentId) {
+            $("#" + playerId).removeClass("stand");
+            $("#" + playerId).addClass("punch");
+            $("#" + opponentId).removeClass("stand");
+            $("#" + opponentId).addClass("hurt");
 
+            setTimeout(function() {
+                $("#" + playerId).addClass("stand");
+                $("#" + playerId).removeClass("punch");
+                $("#" + opponentId).addClass("stand");
+                $("#" + opponentId).removeClass("hurt");
+            }, 900);
         }
     };
 

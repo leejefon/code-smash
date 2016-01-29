@@ -6,6 +6,7 @@ define([
 ], function (backgrounds, characters, events) {
 
     return {
+        name: 'default',
         backgrounds: backgrounds,
         characters: characters,
         events: events

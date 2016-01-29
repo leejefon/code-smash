@@ -17,21 +17,27 @@ define(['main/services'], function (MainServices) {
 
 			var availableGameObjects = [];
 
+			var currentGameObject = null;
+
 			require(availableGames.map(function (game) {
 				return 'games/' + game + '/index';
 			}), function () {
-				availableGameObjects = arguments;
-
-				function loadCSS (href) {
-				     var cssLink = $("<link rel='stylesheet' type='text/css' href='" + href + "'>");
-				     $("head").append(cssLink);
-				}
+				availableGameObjects = $.extend(true, [], arguments);
 			});
+
+			function _loadCSS (game) {
+				 var cssLink = $("<link rel='stylesheet' type='text/css' href='/js/games/" + game + "/style.css' />");
+				 $("head").append(cssLink);
+			}
 
 			function _genSid (len) {
 				len = len || 64;
 				return Math.random().toString(35).substr(2, len);
 			}
+
+			function _randomElement (arr) {
+			    return arr[Math.floor(Math.random() * arr.length)];
+			};
 
             return {
 				bindGameData: function (scope, sessionId) {
@@ -45,17 +51,23 @@ define(['main/services'], function (MainServices) {
 						players: {
 							player1: {
 								uid: params.uid,
-								character: _selectCharacter(),
+								character: null,
 								hp: 100
 							}
 						},
 						settings: {
-							game: _selectGame(),
-							background: _selectBackground()
-						}
+							game: null,
+							background: null
+						},
+						status: 'WAITING_FOR_PLAYER_2'
 					};
 
 					return $q(function (resolve, reject) {
+						currentGameObject = _randomElement(availableGameObjects);
+						game.settings.game = currentGameObject.name;
+						game.settings.background = _randomElement(currentGameObject.backgrounds.list);
+						game.players.player1.character = _randomElement(currentGameObject.characters.list);
+
 						var newGame = {};
 						newGame[game.sessionId] = game;
 						gameRef.set(newGame);
@@ -63,6 +75,7 @@ define(['main/services'], function (MainServices) {
 					});
 				},
 				retrieveGame: function (sessionId, uid) {
+					// TODO: check player ID equals player1
 					return $q(function (resolve, reject) {
 						gameRef.once('value', function (snapshot) {
 							if (snapshot.hasChild(sessionId)) {
@@ -71,13 +84,20 @@ define(['main/services'], function (MainServices) {
 								if (game.players.player2) { // NOTE: already got 2 players
 									reject();
 								} else {
+									availableGameObjects.forEach(function (gameObj) {
+										if (gameObj.name === game.settings.game) {
+											currentGameObject = gameObj;
+										}
+									});
+
 									game.players.player2 = {
 										uid: uid,
-										character: _selectCharacter(),
+										character: _randomElement(currentGameObject.characters.list),
 										hp: 100
 									};
+									game.status = 'PLAYING';
 
-									gameRef.child(sessionId + '/players').set(game.players, function () {
+									gameRef.child(sessionId).set(game, function () {
 										resolve(game.sessionId);
 									});
 								}
@@ -87,11 +107,23 @@ define(['main/services'], function (MainServices) {
 						});
 					});
 				},
-				attack: function () {
-
+				loadGame: function (sessionId) {
+					// TODO: retrieve game might not finish, so current game obj might not exist
+					return $q(function (resolve, reject) {
+						gameRef.once('value', function (snapshot) {
+							var game = snapshot.val()[sessionId];
+							_loadCSS(game.settings.game);
+							currentGameObject.backgrounds.set(game.settings.background);
+							$.each(game.players, function (playerId, player) {
+								currentGameObject.characters[player.character].setPlayer(playerId);
+							});
+						});
+					});
 				},
-				hurt: function () {
-
+				gameUpdate: function (newState, oldState) {
+					if (!oldState.players.player2 && newState.players.player2) {
+						currentGameObject.characters[newState.players.player2.character].setPlayer('player2');
+					}
 				},
 				win: function () {
 

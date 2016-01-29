@@ -12,14 +12,12 @@ html, body {
 
 #game-window {
     height: 60%;
-    border: 1px solid #DDD;
-    padding: 15px;
+    padding-left: 15px;
 }
 
 #test-window {
     height: 40%;
     overflow-y: scroll;
-    border: 1px solid #DDD;
     padding: 30px 15px;
 }
 

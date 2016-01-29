@@ -12,6 +12,7 @@ require.config({
         firebase: '../vendor/firebase/firebase',
         ace: '../vendor/ace-builds/src-min-noconflict/ace',
         aceModeJavaScript: '../vendor/ace-builds/src-min-noconflict/mode-javascript',
+        aceTheme: '../vendor/ace-builds/src-min-noconflict/theme-tomorrow_night_blue',
 
         angular: '../vendor/angular/angular',
         angularCookies: '../vendor/angular-cookies/angular-cookies.min',
@@ -29,7 +30,7 @@ require.config({
 
         angular: { exports: 'angular', deps: ['jquery'] },
         angularUIRouter: ['angular'],
-        angularUIAce: ['angular', 'ace', 'aceModeJavaScript'],
+        angularUIAce: ['angular', 'ace', 'aceModeJavaScript', 'aceTheme'],
         angularLoadingBar: ['angular'],
         angularFire: ['angular', 'firebase'],
 

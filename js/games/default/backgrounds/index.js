@@ -11,7 +11,7 @@ define(['jquery'], function ($) {
             'background6',
         ],
         set: function (name) {
-            // TODO: change class
+            $('#background').addClass(name);
         }
     };
 });

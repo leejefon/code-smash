@@ -17,8 +17,21 @@ define([
                 restrict: 'E',
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-gameWindow.html',
-                controller: ['$scope', 'Game', function ($scope, Game) {
-                    
+                controller: ['$scope', '$rootScope', '$stateParams', 'Game', function ($scope, $rootScope, $stateParams, Game) {
+                    if ($rootScope.gameData) {
+                        Game.loadGame($stateParams.gameSessionId).then(function () {
+                            // TODO: screen showing waiting for 2nd player
+                        });
+                    } else {
+                        // NOTE: if accessing game directly by URL, gameObjects are not yet loaded, and gameData is not ready
+                        var gameReady = $rootScope.$watch('gameData', function (newVal, oldVal) {
+                            if (newVal) {
+                                Game.loadGame($stateParams.gameSessionId).then(function () {
+                                    gameReady();
+                                });
+                            }
+                        });
+                    }
                 }],
                 link: function (scope, elem, attrs) {
 

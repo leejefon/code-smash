@@ -20,7 +20,8 @@ define([
                 templateUrl: '/js/templates/main/partials/directive-editorWindow.html',
                 controller: ['$scope', 'CodeProblem', function ($scope, CodeProblem) {
                     $scope.aceOptions = {
-                        mode: 'javascript'
+                        mode: 'javascript',
+                        theme: 'tomorrow_night_blue'
                     };
 
                     CodeProblem.loadProblem('q1').then(function (problem) {
