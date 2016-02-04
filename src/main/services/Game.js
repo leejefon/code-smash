@@ -157,7 +157,26 @@ define(['main/services'], function (MainServices) {
 					}
 				},
 				getRanking: function () {
+					var userRef = new Firebase('https://code-smash.firebaseio.com/users');
 
+					return $q(function (resolve, reject) {
+						userRef.orderByKey().once('value', function (snapshot) {
+							var ranking = [];
+							angular.forEach(snapshot.val(), function (user) {
+								var temp = $.extend(true, {}, user);
+								if (temp.record.win + temp.record.lose === 0) {
+									temp.record.ratio = 0;
+								} else {
+									temp.record.ratio = temp.record.win / (temp.record.win + temp.record.lose);
+								}
+								ranking.push(temp);
+							});
+							ranking.sort(function (a, b) {
+								return b.record.ratio - a.record.ratio;
+							});
+							resolve(ranking);
+						});
+					});
 				},
 				getAvailablePlayers: function () {
 					return $q(function (resolve, reject) {

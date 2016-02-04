@@ -40704,7 +40704,9 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 				};
 
 				$scope.ranking = function () {
-
+					Game.getRanking().then(function (ranking) {
+						$scope.ranking = ranking;
+					});
 				};
 
 				$scope.join = function () {
@@ -40713,12 +40715,8 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 							return Game.getPlayerInfo(player.uid);
 						}));
 					}).then(function (players) {
-						console.log(players);
+						$scope.availablePlayers = players;
 					});
-
-					// Game.getPlayerInfo('facebook:10153865385555480').then(function (player) {
-					// 	console.log(player);
-					// });
 				};
 
 				$scope.loginFacebook = function () {
@@ -40995,7 +40993,26 @@ define('main/services/Game',['main/services'], function (MainServices) {
 					}
 				},
 				getRanking: function () {
+					var userRef = new Firebase('https://code-smash.firebaseio.com/users');
 
+					return $q(function (resolve, reject) {
+						userRef.orderByKey().once('value', function (snapshot) {
+							var ranking = [];
+							angular.forEach(snapshot.val(), function (user) {
+								var temp = $.extend(true, {}, user);
+								if (temp.record.win + temp.record.lose === 0) {
+									temp.record.ratio = 0;
+								} else {
+									temp.record.ratio = temp.record.win / (temp.record.win + temp.record.lose);
+								}
+								ranking.push(temp);
+							});
+							ranking.sort(function (a, b) {
+								return b.record.ratio - a.record.ratio;
+							});
+							resolve(ranking);
+						});
+					});
 				},
 				getAvailablePlayers: function () {
 					return $q(function (resolve, reject) {

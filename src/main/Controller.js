@@ -32,7 +32,9 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 				};
 
 				$scope.ranking = function () {
-
+					Game.getRanking().then(function (ranking) {
+						$scope.ranking = ranking;
+					});
 				};
 
 				$scope.join = function () {
@@ -41,12 +43,8 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 							return Game.getPlayerInfo(player.uid);
 						}));
 					}).then(function (players) {
-						console.log(players);
+						$scope.availablePlayers = players;
 					});
-
-					// Game.getPlayerInfo('facebook:10153865385555480').then(function (player) {
-					// 	console.log(player);
-					// });
 				};
 
 				$scope.loginFacebook = function () {
