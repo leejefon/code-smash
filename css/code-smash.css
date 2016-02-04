@@ -10,13 +10,7 @@ html, body {
     height: 100%;
 }
 
-#game-window {
-    height: 60%;
-    padding-left: 15px;
-}
-
 #test-window {
-    height: 40%;
     overflow-y: scroll;
     padding: 30px 15px;
 }

@@ -1,6 +1,9 @@
 <div>
     <h3 ng-if="$root.currentUser">Hello, {{ $root.currentUser[$root.currentUser.provider].displayName }}</h3>
 
-    <button class="btn btn-primary" ng-click="loginFacebook()" ng-if="!$root.currentUser">Login Facebook</button>
-    <button class="btn btn-primary" ng-click="newGame()" ng-if="$root.currentUser">New Game</button>
+    <md-button class="md-raised md-primary" ng-click="loginFacebook()" ng-if="!$root.currentUser">Login Facebook</md-button>
+    <md-button class="md-raised md-primary" ng-click="newGame()" ng-if="$root.currentUser">New Game</md-button>
+
+    <md-button class="md-raised md-primary" ng-href="/#/ranking">Ranking</md-button>
+    <md-button class="md-raised md-primary" ng-href="/#/join" ng-if="$root.currentUser">Join a Game</md-button>
 </div>

@@ -1,17 +1,17 @@
 {
-  "name": "code-smash",
-  "description": "",
-  "main": "",
-  "authors": [
+    "name": "code-smash",
+    "description": "",
+    "main": "",
+    "authors": [
     "Jeff Lee"
   ],
-  "license": "MIT",
-  "moduleType": [
+    "license": "MIT",
+    "moduleType": [
     "amd"
   ],
-  "homepage": "",
-  "private": true,
-  "ignore": [
+    "homepage": "",
+    "private": true,
+    "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
@@ -19,16 +19,17 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "ace-builds": "ajaxorg/ace-builds#~1.2.3",
-    "angularfire": "~1.1.3",
-    "angular-ui-router": "~0.2.17",
-    "angular-loading-bar": "~0.8.0",
-    "chai": "~3.4.2",
-    "mocha": "~2.3.4",
-    "requirejs": "~2.1.22",
-    "toastr": "~2.1.2",
-    "angular-ui-ace": "~0.2.3",
-    "angular-cookies": "~1.4.9"
-  }
+    "dependencies": {
+        "ace-builds": "ajaxorg/ace-builds#~1.2.3",
+        "angular-ui-router": "~0.2.17",
+        "angular-ui-ace": "~0.2.3",
+        "angular-cookies": "~1.4.9",
+        "angular-loading-bar": "~0.8.0",
+        "angular-material": "^1.0.4",
+        "angularfire": "~1.1.3",
+        "chai": "~3.4.2",
+        "mocha": "~2.3.4",
+        "requirejs": "~2.1.22",
+        "toastr": "~2.1.2"
+    }
 }

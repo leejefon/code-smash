@@ -8,6 +8,7 @@
 define([
 	'angular',
 	'angularLoadingBar',
+	'angularMaterial',
 	'main/Controller',
     'main/Routes',
 	'main/directives/GameWindow',
@@ -17,6 +18,7 @@ define([
 
 	return angular.module('Main', [
 		'chieffancypants.loadingBar',
+		'ngMaterial',
 		'Main.controllers',
         'Main.routes',
 		'Main.directives'
