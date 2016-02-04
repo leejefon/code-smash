@@ -120,7 +120,6 @@ define(['main/services'], function (MainServices) {
 					});
 				},
 				loadGame: function (sessionId) {
-					// TODO: retrieve game might not finish, so current game obj might not exist
 					return $q(function (resolve, reject) {
 						gameRef.once('value', function (snapshot) {
 							var game = snapshot.val()[sessionId];
@@ -156,6 +155,31 @@ define(['main/services'], function (MainServices) {
 							currentGameObject.characters[newState.players.player1.character].win();
 						}
 					}
+				},
+				getRanking: function () {
+
+				},
+				getAvailablePlayers: function () {
+					return $q(function (resolve, reject) {
+						gameRef.orderByChild("status").limitToFirst(20).once('value', function (snapshot) {
+							var players = [];
+							angular.forEach(snapshot.val(), function (value) {
+								if (value.status === 'WAITING_FOR_PLAYER_2') {
+									players.push(value.players.player1);
+								}
+							});
+							resolve(players);
+						});
+					});
+				},
+				getPlayerInfo: function (uid) {
+					var userRef = new Firebase('https://code-smash.firebaseio.com/users');
+
+					return $q(function (resolve, reject) {
+						userRef.orderByKey().startAt(uid).once('value', function (snapshot) {
+							resolve(snapshot.val()[uid].facebook);
+						});
+					});
 				}
             };
 		}]);

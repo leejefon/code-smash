@@ -40629,19 +40629,19 @@ define('auth/Service',['auth/app', 'angularFire', 'angularCookies'], function (A
 
 				userRef.once('value', function (snapshot) {
 					if (!snapshot.hasChild(userData.uid)) {
-						var user = {};
-						user[userData.uid] = _omit(userData, ['token', 'expires', 'facebook.accessToken']);
-						user[userData.uid].record = { win: 0, lose: 0 };
-						userRef.set(user);
+						var user = _omit(userData, ['token', 'expires', 'facebook.accessToken']);
+						user.record = { win: 0, lose: 0 };
+						userRef.child(userData.uid).set(user);
 					}
 				});
 			}
 
 			function _omit (obj, props) {
-				delete obj.token;
-				delete obj.expires;
-				delete obj.facebook.accessToken;
-				return obj;
+				var returnObj = $.extend(true, {}, obj);
+				delete returnObj.token;
+				delete returnObj.expires;
+				delete returnObj.facebook.accessToken;
+				return returnObj;
 			}
 
             return {
@@ -40681,8 +40681,8 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 
 	return angular.module('Main.controllers', ['Auth'])
 
-		.controller('MainController', ['$scope', '$rootScope', '$state', '$stateParams', 'Auth', 'CodeProblem', 'Game',
-			function ($scope, $rootScope, $state, $stateParams, Auth, CodeProblem, Game) {
+		.controller('MainController', ['$scope', '$rootScope', '$state', '$stateParams', '$q', 'Auth', 'CodeProblem', 'Game',
+			function ($scope, $rootScope, $state, $stateParams, $q, Auth, CodeProblem, Game) {
 
 				$scope.home = function () {
 
@@ -40701,6 +40701,24 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 							toastr.error('Game not found');
 						});
 					}
+				};
+
+				$scope.ranking = function () {
+
+				};
+
+				$scope.join = function () {
+					Game.getAvailablePlayers().then(function (players) {
+						return $q.all(players.map(function (player) {
+							return Game.getPlayerInfo(player.uid);
+						}));
+					}).then(function (players) {
+						console.log(players);
+					});
+
+					// Game.getPlayerInfo('facebook:10153865385555480').then(function (player) {
+					// 	console.log(player);
+					// });
 				};
 
 				$scope.loginFacebook = function () {
@@ -40760,6 +40778,22 @@ define('main/Routes',['angular', 'angularUIRouter'], function (angular) {
 					controller: 'MainController',
 					action: 'home',
 					requireLogin: false
+				})
+
+				.state('ranking', {
+					url: '/ranking',
+					templateUrl: '/js/templates/main/partials/ranking.html',
+					controller: 'MainController',
+					action: 'ranking',
+					requireLogin: false
+				})
+
+				.state('join', {
+					url: '/join',
+					templateUrl: '/js/templates/main/partials/join.html',
+					controller: 'MainController',
+					action: 'join',
+					requireLogin: true
 				})
 
                 .state('game', {
@@ -40924,7 +40958,6 @@ define('main/services/Game',['main/services'], function (MainServices) {
 					});
 				},
 				loadGame: function (sessionId) {
-					// TODO: retrieve game might not finish, so current game obj might not exist
 					return $q(function (resolve, reject) {
 						gameRef.once('value', function (snapshot) {
 							var game = snapshot.val()[sessionId];
@@ -40960,6 +40993,31 @@ define('main/services/Game',['main/services'], function (MainServices) {
 							currentGameObject.characters[newState.players.player1.character].win();
 						}
 					}
+				},
+				getRanking: function () {
+
+				},
+				getAvailablePlayers: function () {
+					return $q(function (resolve, reject) {
+						gameRef.orderByChild("status").limitToFirst(20).once('value', function (snapshot) {
+							var players = [];
+							angular.forEach(snapshot.val(), function (value) {
+								if (value.status === 'WAITING_FOR_PLAYER_2') {
+									players.push(value.players.player1);
+								}
+							});
+							resolve(players);
+						});
+					});
+				},
+				getPlayerInfo: function (uid) {
+					var userRef = new Firebase('https://code-smash.firebaseio.com/users');
+
+					return $q(function (resolve, reject) {
+						userRef.orderByKey().startAt(uid).once('value', function (snapshot) {
+							resolve(snapshot.val()[uid].facebook);
+						});
+					});
 				}
             };
 		}]);

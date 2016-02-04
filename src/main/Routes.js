@@ -19,6 +19,22 @@ define(['angular', 'angularUIRouter'], function (angular) {
 					requireLogin: false
 				})
 
+				.state('ranking', {
+					url: '/ranking',
+					templateUrl: '/js/templates/main/partials/ranking.html',
+					controller: 'MainController',
+					action: 'ranking',
+					requireLogin: false
+				})
+
+				.state('join', {
+					url: '/join',
+					templateUrl: '/js/templates/main/partials/join.html',
+					controller: 'MainController',
+					action: 'join',
+					requireLogin: true
+				})
+
                 .state('game', {
 					url: '/:gameSessionId',
 					templateUrl: '/js/templates/main/partials/game.html',

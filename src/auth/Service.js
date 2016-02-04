@@ -18,19 +18,19 @@ define(['auth/app', 'angularFire', 'angularCookies'], function (Auth) {
 
 				userRef.once('value', function (snapshot) {
 					if (!snapshot.hasChild(userData.uid)) {
-						var user = {};
-						user[userData.uid] = _omit(userData, ['token', 'expires', 'facebook.accessToken']);
-						user[userData.uid].record = { win: 0, lose: 0 };
-						userRef.set(user);
+						var user = _omit(userData, ['token', 'expires', 'facebook.accessToken']);
+						user.record = { win: 0, lose: 0 };
+						userRef.child(userData.uid).set(user);
 					}
 				});
 			}
 
 			function _omit (obj, props) {
-				delete obj.token;
-				delete obj.expires;
-				delete obj.facebook.accessToken;
-				return obj;
+				var returnObj = $.extend(true, {}, obj);
+				delete returnObj.token;
+				delete returnObj.expires;
+				delete returnObj.facebook.accessToken;
+				return returnObj;
 			}
 
             return {
