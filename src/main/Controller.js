@@ -38,12 +38,18 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 				};
 
 				$scope.join = function () {
-					Game.getAvailablePlayers().then(function (players) {
-						return $q.all(players.map(function (player) {
-							return Game.getPlayerInfo(player.uid);
+					Game.getAvailableGames().then(function (games) {
+						return $q.all(games.map(function (game) {
+							return Game.getPlayerInfo(game.player.uid).then(function (player) {
+								return {
+									player: player,
+									gameId: game.gameId
+								}
+							});
 						}));
-					}).then(function (players) {
-						$scope.availablePlayers = players;
+					}).then(function (games) {
+						$scope.availableGames = games;
+						console.log(games);
 					});
 				};
 

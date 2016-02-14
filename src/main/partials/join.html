@@ -1,3 +1,13 @@
-<div>
-    Join Game
+<div id="main">
+    <div id="main-background"></div>
+
+    <md-list ng-cloak>
+        <md-subheader class="md-no-sticky">Available Games</md-subheader>
+        <md-list-item ng-repeat="game in availableGames">
+            <p>
+                <img ng-src="{{ game.player.profileImageURL }}" alt="" />
+                <a href="/#/{{ game.gameId }}">{{ game.player.displayName }}</a>
+            </p>
+        </md-list-item>
+    </md-list>
 </div>

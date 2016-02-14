@@ -1,4 +1,7 @@
-<div>
+<div id="main">
+    <div id="main-background"></div>
+    <div id="logo"><img src="/img/logo.jpg" alt="Code Smash" /></div>
+
     <h3 ng-if="$root.currentUser">Hello, {{ $root.currentUser[$root.currentUser.provider].displayName }}</h3>
 
     <md-button class="md-raised md-primary" ng-click="loginFacebook()" ng-if="!$root.currentUser">Login Facebook</md-button>

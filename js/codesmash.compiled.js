@@ -40817,12 +40817,18 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 				};
 
 				$scope.join = function () {
-					Game.getAvailablePlayers().then(function (players) {
-						return $q.all(players.map(function (player) {
-							return Game.getPlayerInfo(player.uid);
+					Game.getAvailableGames().then(function (games) {
+						return $q.all(games.map(function (game) {
+							return Game.getPlayerInfo(game.player.uid).then(function (player) {
+								return {
+									player: player,
+									gameId: game.gameId
+								}
+							});
 						}));
-					}).then(function (players) {
-						$scope.availablePlayers = players;
+					}).then(function (games) {
+						$scope.availableGames = games;
+						console.log(games);
 					});
 				};
 
@@ -41121,16 +41127,19 @@ define('main/services/Game',['main/services'], function (MainServices) {
 						});
 					});
 				},
-				getAvailablePlayers: function () {
+				getAvailableGames: function () {
 					return $q(function (resolve, reject) {
 						gameRef.orderByChild("status").limitToFirst(20).once('value', function (snapshot) {
-							var players = [];
+							var games = [];
 							angular.forEach(snapshot.val(), function (value) {
 								if (value.status === 'WAITING_FOR_PLAYER_2') {
-									players.push(value.players.player1);
+									games.push({
+										player: value.players.player1,
+										gameId: value.sessionId
+									});
 								}
 							});
-							resolve(players);
+							resolve(games);
 						});
 					});
 				},

@@ -1,3 +1,13 @@
-<div>
-    Ranking
+<div id="main">
+    <div id="main-background"></div>
+
+    <md-list ng-cloak>
+        <md-subheader class="md-no-sticky">Rankings</md-subheader>
+        <md-list-item ng-repeat="user in ranking">
+            <p>{{ user.facebook.displayName }}</p>
+            <md-button class="md-secondary" ng-click="">
+                {{ user.record.win }} / {{ user.record.lose }} ({{ user.record.ratio * 100 }}%)
+            </md-button>
+        </md-list-item>
+    </md-list>
 </div>

@@ -178,16 +178,19 @@ define(['main/services'], function (MainServices) {
 						});
 					});
 				},
-				getAvailablePlayers: function () {
+				getAvailableGames: function () {
 					return $q(function (resolve, reject) {
 						gameRef.orderByChild("status").limitToFirst(20).once('value', function (snapshot) {
-							var players = [];
+							var games = [];
 							angular.forEach(snapshot.val(), function (value) {
 								if (value.status === 'WAITING_FOR_PLAYER_2') {
-									players.push(value.players.player1);
+									games.push({
+										player: value.players.player1,
+										gameId: value.sessionId
+									});
 								}
 							});
-							resolve(players);
+							resolve(games);
 						});
 					});
 				},
