@@ -40833,7 +40833,7 @@ define('main/Controller',['angular', 'toastr', 'auth/Service'], function (angula
 				$scope.newGame = function () {
 					Game.createGame({
 						uid: $rootScope.currentUser.uid,
-						problems: CodeProblem.getRandomProblems()
+						problems: CodeProblem.getProblemsQueue()
 					}).then(function (sessionId) {
 						return Game.bindGameData($rootScope, sessionId);
 					}).then(function () {
@@ -53650,9 +53650,17 @@ define('main/services/CodeProblem',['main/services', 'mocha'], function (MainSer
 
 	return MainServices
 
-		.factory('CodeProblem', ['$q', function ($q) {
+		.factory('CodeProblem', ['$q', '$rootScope', function ($q, $rootScope) {
 
-			var availableProblems = ['q1', 'q2', 'q3', 'q4', 'q5'];
+			var availableProblems = [
+				'q1-Multiply',
+				'q2-TriangleArea',
+				'q3-DaysTilXmas',
+				'q4-FileExt',
+				'q5-LongestString',
+				'q6-ArraySum',
+				'q7-Temperature'
+			];
 
 			var currentProblem = {
 				name: '',
@@ -53661,21 +53669,20 @@ define('main/services/CodeProblem',['main/services', 'mocha'], function (MainSer
 				userSolution: ''
 			};
 
+			var problemQueue = _getRandomProblems();
+
 			mocha.setup('bdd');
 
             return {
-				getRandomProblems: function (number, level) {
-					number = number || 5;
-					level = level || 'easy';
-
-					if (number > availableProblems.length) {
-						number = availableProblems.length;
-					}
-
-					// NOTE: Shuffle array: https://css-tricks.com/snippets/javascript/shuffle-array/
-					return availableProblems.sort(function () { return 0.5 - Math.random(); }).slice(0, number);
+				getProblemsQueue: function () {
+					return $rootScope.gameData ? $rootScope.gameData.problems : problemQueue;
 				},
 				loadProblem: function (name) {
+					if (!name) {
+						var index = problemQueue.indexOf(currentProblem.name);
+						name = problemQueue[index + 1];
+					}
+
 					return $q(function (resolve, reject) {
 						require(['problems/' + name + '/prob'], function (problem) {
 							currentProblem.name = name;
@@ -53698,6 +53705,18 @@ define('main/services/CodeProblem',['main/services', 'mocha'], function (MainSer
 					});
 				}
             };
+
+			function _getRandomProblems (number, level) {
+				number = number || 5;
+				level = level || 'easy';
+
+				if (number > availableProblems.length) {
+					number = availableProblems.length;
+				}
+
+				// NOTE: Shuffle array: https://css-tricks.com/snippets/javascript/shuffle-array/
+				return availableProblems.sort(function () { return 0.5 - Math.random(); }).slice(0, number);
+			}
 		}]);
 });
 
@@ -53723,9 +53742,14 @@ define('main/directives/TestWindow',[
                 templateUrl: '/js/templates/main/partials/directive-testWindow.html',
                 controller: ['$scope', '$rootScope', 'CodeProblem', 'Game', function ($scope, $rootScope, CodeProblem, Game) {
                     $scope.runTest = function () {
+                        $('#mocha').empty();
                         CodeProblem.runTest().then(function (result) {
-                            console.log(result);
+                            // TODO: next problem?
                         });
+                    };
+
+                    $scope.win = function () {
+                        Game.win();
                     };
 
                     $scope.nextProblem = function () {
@@ -53734,6 +53758,10 @@ define('main/directives/TestWindow',[
                         } else {
                             $rootScope.gameData.players['player1'].hp -= 25;
                         }
+
+                        CodeProblem.loadProblem().then(function (problem) {
+                            $rootScope.code = problem.text;
+                        });
                     };
                 }],
                 link: function (scope, elem, attrs) {
@@ -53791,16 +53819,17 @@ define('main/directives/EditorWindow',[
                 restrict: 'E',
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-editorWindow.html',
-                controller: ['$scope', 'CodeProblem', function ($scope, CodeProblem) {
+                controller: ['$scope', '$rootScope', 'CodeProblem', function ($scope, $rootScope, CodeProblem) {
                     $scope.aceOptions = {
                         mode: 'javascript',
                         theme: 'tomorrow_night_blue'
                     };
 
-                    CodeProblem.loadProblem('q1').then(function (problem) {
-                        $scope.code = problem.text;
+                    // NOTE: load first problem and watch
+                    CodeProblem.loadProblem().then(function (problem) {
+                        $rootScope.code = problem.text;
 
-                        $scope.$watch('code', function (newValue, oldValue) {
+                        $rootScope.$watch('code', function (newValue, oldValue) {
                             CodeProblem.updateUserSolution(newValue);
                         });
                     });

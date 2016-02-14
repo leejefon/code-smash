@@ -6,3 +6,8 @@ define([], function () {
         func: 'multiply'
     };
 });
+
+// SOLUTION:
+// function multiply (a, b) {
+//     return a * b;
+// }

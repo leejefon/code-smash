@@ -20,9 +20,14 @@ define([
                 templateUrl: '/js/templates/main/partials/directive-testWindow.html',
                 controller: ['$scope', '$rootScope', 'CodeProblem', 'Game', function ($scope, $rootScope, CodeProblem, Game) {
                     $scope.runTest = function () {
+                        $('#mocha').empty();
                         CodeProblem.runTest().then(function (result) {
-                            console.log(result);
+                            // TODO: next problem?
                         });
+                    };
+
+                    $scope.win = function () {
+                        Game.win();
                     };
 
                     $scope.nextProblem = function () {
@@ -31,6 +36,10 @@ define([
                         } else {
                             $rootScope.gameData.players['player1'].hp -= 25;
                         }
+
+                        CodeProblem.loadProblem().then(function (problem) {
+                            $rootScope.code = problem.text;
+                        });
                     };
                 }],
                 link: function (scope, elem, attrs) {

@@ -41,4 +41,5 @@ gulp.task('watch', function () {
 	gulp.watch(paths.assetsToWatch, ['uglifyJs', 'extractTemplates']);
 });
 
-gulp.task('default', ['uglifyJs', 'extractTemplates', 'watch', 'webserver']);
+// gulp.task('default', ['uglifyJs', 'extractTemplates', 'webserver', 'watch']);
+gulp.task('default', ['uglifyJs', 'extractTemplates', 'watch']);

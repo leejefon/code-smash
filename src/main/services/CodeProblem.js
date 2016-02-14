@@ -9,9 +9,17 @@ define(['main/services', 'mocha'], function (MainServices, mocha) {
 
 	return MainServices
 
-		.factory('CodeProblem', ['$q', function ($q) {
+		.factory('CodeProblem', ['$q', '$rootScope', function ($q, $rootScope) {
 
-			var availableProblems = ['q1', 'q2', 'q3', 'q4', 'q5'];
+			var availableProblems = [
+				'q1-Multiply',
+				'q2-TriangleArea',
+				'q3-DaysTilXmas',
+				'q4-FileExt',
+				'q5-LongestString',
+				'q6-ArraySum',
+				'q7-Temperature'
+			];
 
 			var currentProblem = {
 				name: '',
@@ -20,21 +28,20 @@ define(['main/services', 'mocha'], function (MainServices, mocha) {
 				userSolution: ''
 			};
 
+			var problemQueue = _getRandomProblems();
+
 			mocha.setup('bdd');
 
             return {
-				getRandomProblems: function (number, level) {
-					number = number || 5;
-					level = level || 'easy';
-
-					if (number > availableProblems.length) {
-						number = availableProblems.length;
-					}
-
-					// NOTE: Shuffle array: https://css-tricks.com/snippets/javascript/shuffle-array/
-					return availableProblems.sort(function () { return 0.5 - Math.random(); }).slice(0, number);
+				getProblemsQueue: function () {
+					return $rootScope.gameData ? $rootScope.gameData.problems : problemQueue;
 				},
 				loadProblem: function (name) {
+					if (!name) {
+						var index = problemQueue.indexOf(currentProblem.name);
+						name = problemQueue[index + 1];
+					}
+
 					return $q(function (resolve, reject) {
 						require(['problems/' + name + '/prob'], function (problem) {
 							currentProblem.name = name;
@@ -57,5 +64,17 @@ define(['main/services', 'mocha'], function (MainServices, mocha) {
 					});
 				}
             };
+
+			function _getRandomProblems (number, level) {
+				number = number || 5;
+				level = level || 'easy';
+
+				if (number > availableProblems.length) {
+					number = availableProblems.length;
+				}
+
+				// NOTE: Shuffle array: https://css-tricks.com/snippets/javascript/shuffle-array/
+				return availableProblems.sort(function () { return 0.5 - Math.random(); }).slice(0, number);
+			}
 		}]);
 });

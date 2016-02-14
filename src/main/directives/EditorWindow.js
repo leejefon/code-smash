@@ -18,16 +18,17 @@ define([
                 restrict: 'E',
                 replace: true,
                 templateUrl: '/js/templates/main/partials/directive-editorWindow.html',
-                controller: ['$scope', 'CodeProblem', function ($scope, CodeProblem) {
+                controller: ['$scope', '$rootScope', 'CodeProblem', function ($scope, $rootScope, CodeProblem) {
                     $scope.aceOptions = {
                         mode: 'javascript',
                         theme: 'tomorrow_night_blue'
                     };
 
-                    CodeProblem.loadProblem('q1').then(function (problem) {
-                        $scope.code = problem.text;
+                    // NOTE: load first problem and watch
+                    CodeProblem.loadProblem().then(function (problem) {
+                        $rootScope.code = problem.text;
 
-                        $scope.$watch('code', function (newValue, oldValue) {
+                        $rootScope.$watch('code', function (newValue, oldValue) {
                             CodeProblem.updateUserSolution(newValue);
                         });
                     });

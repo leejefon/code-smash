@@ -54,7 +54,7 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 				$scope.newGame = function () {
 					Game.createGame({
 						uid: $rootScope.currentUser.uid,
-						problems: CodeProblem.getRandomProblems()
+						problems: CodeProblem.getProblemsQueue()
 					}).then(function (sessionId) {
 						return Game.bindGameData($rootScope, sessionId);
 					}).then(function () {

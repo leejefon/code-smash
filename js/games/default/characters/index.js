@@ -3,7 +3,11 @@ define(['jquery'], function ($) {
 
     var kirby = {
         setPlayer: function (playerId) {
-            $('#' + playerId).addClass('kirby stand');
+            // TODO: if playerId is 1, position left, playerId 2 position right
+            $('#' + playerId)
+                .addClass('kirby stand')
+                .after($('<div />').addClass('kirby_win').hide());
+            // TODO: set hp
         },
         attack: function (playerId, opponentId) {
             $("#" + playerId).removeClass("stand");
@@ -19,16 +23,23 @@ define(['jquery'], function ($) {
             }, 900);
         },
         win: function () {
-            console.log('I won');
+            $('#gameoverLay').show();
+            $('.kirby_win').show();
         },
         lose: function () {
-            console.log('I lost');
+            $('#gameoverLay').show();
+            $('#gameover').show();
         }
     };
 
     var mario = {
         setPlayer: function (playerId) {
-            $('#' + playerId).addClass('mario stand');
+            // TODO: if playerId is 1, position left, playerId 2 position right
+            $('#' + playerId)
+                .addClass('mario stand')
+                .after($('<div />').addClass('mario_win').hide());
+
+            // TODO: set hp
         },
         attack: function (playerId, opponentId) {
             $("#" + playerId).removeClass("stand");
@@ -44,10 +55,12 @@ define(['jquery'], function ($) {
             }, 900);
         },
         win: function () {
-            console.log('I won');
+            $('#gameoverLay').show();
+            $('.mario_win').show();
         },
         lose: function () {
-            console.log('I lost');
+            $('#gameoverLay').show();
+            $('#gameover').show();
         }
     };
 
