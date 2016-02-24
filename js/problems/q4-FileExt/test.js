@@ -7,8 +7,8 @@ define(['mocha', 'chai'], function (mocha, chai) {
             var text2 = "text.doc"
             var result2 = "doc"
 
-            expect(get_File_Extension(text)).to.equal(result);
-            expect(get_File_Extension(text2)).to.equal(result2);
+            expect(get_file_extension(text)).to.equal(result);
+            expect(get_file_extension(text2)).to.equal(result2);
         });
 
         it("return text extension without name", function () {
@@ -18,8 +18,8 @@ define(['mocha', 'chai'], function (mocha, chai) {
             var text4 = ".json"
             var result4= "json"
 
-            expect(get_File_Extension(text3)).to.equal(result3);
-            expect(get_File_Extension(text4)).to.equal(result4);
+            expect(get_file_extension(text3)).to.equal(result3);
+            expect(get_file_extension(text4)).to.equal(result4);
         });
     });
 });

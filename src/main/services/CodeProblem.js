@@ -36,6 +36,9 @@ define(['main/services', 'mocha'], function (MainServices, mocha) {
 				getProblemsQueue: function () {
 					return $rootScope.gameData ? $rootScope.gameData.problems : problemQueue;
 				},
+				problemQueueUpdate: function (newProblemQueue) {
+					problemQueue = newProblemQueue;
+				},
 				loadProblem: function (name) {
 					if (!name) {
 						var index = problemQueue.indexOf(currentProblem.name);

@@ -22,7 +22,9 @@ define([
                     $scope.runTest = function () {
                         $('#mocha').empty();
                         CodeProblem.runTest().then(function (result) {
-                            // TODO: next problem?
+                            if (result.failures === 0) {
+                                $('#nextProblemBtn').prop('disabled', false);
+                            }
                         });
                     };
 
@@ -32,13 +34,15 @@ define([
 
                     $scope.nextProblem = function () {
                         if (Game.currentPlayerId() === 'player1') {
-                            $rootScope.gameData.players['player2'].hp -= 25;
+                            $rootScope.gameData.players['player2'].hp -= 20;
                         } else {
-                            $rootScope.gameData.players['player1'].hp -= 25;
+                            $rootScope.gameData.players['player1'].hp -= 20;
                         }
 
                         CodeProblem.loadProblem().then(function (problem) {
                             $rootScope.code = problem.text;
+                            $('#mocha').empty();
+                            $('#nextProblemBtn').prop('disabled', true);
                         });
                     };
                 }],

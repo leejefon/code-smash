@@ -2,7 +2,28 @@ define([], function () {
     return {
         text: 'function array_sum (arr) {\n' +
             '    // TODO: sum the elements in array\n' +
-            '}',
+            '}' +
+
+            '\n\n' +
+            '// SOLUTION:\n' +
+            '// function array_sum (arr) {\n' +
+            '//     var sum = 0;\n' +
+            '//     var n = 0;\n' +
+            '//     var len = arr.length;\n' +
+            '//\n' +
+            '//     if (typeof arr === "number") {\n' +
+            '//        //test if arr is a number\n' +
+            '//         sum += arr;\n' +
+            '//     } else if (Array.isArray(arr)) {\n' +
+            '//         //  arr could be an array too apparently in js\n' +
+            '//         for (; n < len; n++) {\n' +
+            '//             sum += array_sum(arr[n]);\n' +
+            '//         }\n' +
+            '//     }\n' +
+            '//\n' +
+            '//     return sum;\n' +
+            '// }\n',
+
         func: 'array_sum'
     };
 });

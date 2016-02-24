@@ -5,7 +5,7 @@ define(['mocha', 'chai'], function (mocha, chai) {
             var array = ['bob','testering', 3, 5, 13, ["test", 1, 2], "henning"];
             var result = 24;
 
-            expect(array_Sum(array)).to.equal(result);
+            expect(array_sum(array)).to.equal(result);
         });
 
         it("lets make a easier test case", function () {
@@ -13,7 +13,7 @@ define(['mocha', 'chai'], function (mocha, chai) {
             var array2 = [1, 2, 33, 4, 5];
             var result2 = 45 ;
 
-            expect(array_Sum(array2)).to.equal(result2);
+            expect(array_sum(array2)).to.equal(result2);
         });
     });
 });

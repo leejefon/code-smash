@@ -24,7 +24,10 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 							// console.log($rootScope.gameData);
 							$rootScope.$watch('gameData', function (newVal, oldVal) {
 								Game.gameUpdate(newVal, oldVal);
+								CodeProblem.problemQueueUpdate(newVal.problems);
 							}, true);
+
+							Game.loadGame($stateParams.gameSessionId).then(function () {});
 						}).catch(function () {
 							toastr.error('Game not found');
 						});
@@ -49,7 +52,6 @@ define(['angular', 'toastr', 'auth/Service'], function (angular, toastr) {
 						}));
 					}).then(function (games) {
 						$scope.availableGames = games;
-						console.log(games);
 					});
 				};
 

@@ -1,13 +1,27 @@
 <div id="main">
     <div id="main-background"></div>
 
-    <md-list ng-cloak>
-        <md-subheader class="md-no-sticky">Available Games</md-subheader>
-        <md-list-item ng-repeat="game in availableGames">
-            <p>
-                <img ng-src="{{ game.player.profileImageURL }}" alt="" />
-                <a href="/#/{{ game.gameId }}">{{ game.player.displayName }}</a>
-            </p>
-        </md-list-item>
-    </md-list>
+    <div class="container">
+        <div class="pageActions">
+            <a class="btn btn-primary" href="#/">Back to Home</a>
+            <a class="btn btn-primary" href="#/ranking">Ranking</a>
+        </div>
+
+        <h3>Available Games</h3>
+        <hr />
+
+        <table class="table table-striped table-bordered table-hover">
+            <tr>
+                <th>User</th>
+                <th>User Id</th>
+                <th>&nbsp;</th>
+            </tr>
+
+            <tr ng-repeat="game in availableGames">
+                <td><img ng-src="{{ game.player.profileImageURL }}" alt="{{ game.player.displayName }}" height="50" /></td>
+                <td>{{ game.player.displayName }}</td>
+                <td><a href="#/{{ game.gameId }}" class="btn btn-primary">Join</a></td>
+            </tr>
+        </table>
+    </div>
 </div>

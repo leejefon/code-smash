@@ -1,8 +1,8 @@
-<div id="test-window" flex="30" layout="row">
-    <div id="mocha" flex="80"></div>
-    <div flex="20">
-        <md-button ng-click="runTest()" class="md-raised md-primary">Run Test</md-button>
+<div id="test-window" class="row">
+    <div id="mocha" class="col-lg-10"></div>
+    <div class="col-lg-2">
+        <button ng-click="runTest()" class="btn btn-success">Run Test</button>
         <br /><br />
-        <md-button ng-click="nextProblem()" class="md-raised md-primary">Next Problem</md-button>
+        <button ng-click="nextProblem()" class="btn btn-default" id="nextProblemBtn" disabled="disabled">Next Problem</button>
     </div>
 </div>

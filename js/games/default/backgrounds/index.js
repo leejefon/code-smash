@@ -1,3 +1,9 @@
+/**
+ * Backgrounds
+ *
+ * @author  :: Travis Wu
+ * @created :: 2016/01/25
+ */
 
 define(['jquery'], function ($) {
 

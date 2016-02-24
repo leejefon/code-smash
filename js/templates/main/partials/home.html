@@ -1,12 +1,15 @@
 <div id="main">
     <div id="main-background"></div>
-    <div id="logo"><img src="/img/logo.jpg" alt="Code Smash" /></div>
+    <div id="logo"><img src="img/logo.png" alt="Code Smash" height="500px" width="500px"/></div>
 
+    <br />
+
+    <h3 ng-if="!$root.currentUser">Welcome to Code Smash</h3>
     <h3 ng-if="$root.currentUser">Hello, {{ $root.currentUser[$root.currentUser.provider].displayName }}</h3>
 
-    <md-button class="md-raised md-primary" ng-click="loginFacebook()" ng-if="!$root.currentUser">Login Facebook</md-button>
-    <md-button class="md-raised md-primary" ng-click="newGame()" ng-if="$root.currentUser">New Game</md-button>
+    <button class="btn btn-primary" ng-click="loginFacebook()" ng-if="!$root.currentUser">Login (random user)</button>
+    <button class="btn btn-primary" ng-click="newGame()" ng-if="$root.currentUser">New Game</button>
 
-    <md-button class="md-raised md-primary" ng-href="/#/ranking">Ranking</md-button>
-    <md-button class="md-raised md-primary" ng-href="/#/join" ng-if="$root.currentUser">Join a Game</md-button>
+    <a class="btn btn-primary" href="#/ranking">Ranking</a>
+    <a class="btn btn-primary" href="#/join" ng-if="$root.currentUser">Join a Game</a>
 </div>

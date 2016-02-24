@@ -2,42 +2,83 @@ html, body {
     height: 100%;
 }
 
-#main {
-    height: 100%;
-    text-align: center;
-}
-
-#main-background {
-    background: url(/img/bg.jpg);
-    background-size: cover;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    opacity: 0.3;
-}
-
-#logo {
-    position: relative;
-}
-
-.md-button {
-    padding: 10px 25px;
-    font-size: 16px;
-}
-
-a.md-button {
-    display: inline-table;
-}
-
-.ace_editor  {
-    height: 100%;
+table {
+    background-color: white;
 }
 
 .max-height {
     height: 100%;
 }
 
+.pageActions {
+    text-align: left;
+    margin-top: 20px;
+}
+
+#main {
+    height: 100%;
+    text-align: center;
+}
+
+#main-background {
+    background: url(../img/bg.jpg);
+    background-size: cover;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+#logo {
+    position: relative;
+    margin-left: 130px;
+
+}
+
+ #logo img{
+    height:500px;
+    width:500px;
+ }
+
+.ace_editor  {
+    height: 100%;
+}
+
+#game-window {
+    height: 60%;
+    padding-left: 15px;
+}
+
+#waitingForPlayer {
+    display: none;
+    z-index: 101;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#waitingForPlayer h2 {
+    position: relative;
+    z-index: 1000;
+    color: white;
+    top: 200px;
+    text-align: center;
+}
+
+#waitingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #666;
+    opacity: 0.8;
+    z-index: 100;
+}
+
 #test-window {
+    height: 40%;
     overflow-y: scroll;
     padding: 30px 15px;
 }
@@ -48,6 +89,7 @@ a.md-button {
 
 #mocha-stats {
     position: relative;
+    top: auto;
 }
 
 #mocha-stats .progress {

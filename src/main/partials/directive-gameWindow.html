@@ -1,9 +1,19 @@
-<div id="game-window" flex="70" class="max-height">
+<div id="game-window" class="row">
     <div id="background"></div>
     <div id="player1"></div>
     <div id="player2"></div>
     <div id="hp1"></div>
     <div id="hp2"></div>
-    <div id="gameover"></div>
+
     <div id="gameoverLay"></div>
+    <div id="gameover"></div>
+    <div id="gameoverActions">
+        <!-- <button class="btn btn-primary" ng-click="">New Game</button> -->
+        <a class="btn btn-primary" href="#/">Back to Home</a>
+    </div>
+
+    <div id="waitingForPlayer">
+        <div id="waitingOverlay"></div>
+        <h2>Waiting For Player 2 to Join</h2>
+    </div>
 </div>

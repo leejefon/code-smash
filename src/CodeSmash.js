@@ -21,11 +21,6 @@ require.config({
         angularLoadingBar: '../vendor/angular-loading-bar/build/loading-bar',
         angularFire: '../vendor/angularfire/dist/angularfire.min',
 
-        angularAnimate: '../vendor/angular-animate/angular-animate.min',
-        angularAria: '../vendor/angular-aria/angular-aria.min',
-        angularMessages: '../vendor/angular-messages/angular-messages.min',
-        angularMaterial: '../vendor/angular-material/angular-material.min',
-
         mocha: '../vendor/mocha/mocha',
         chai: '../vendor/chai/chai',
     },
@@ -38,11 +33,6 @@ require.config({
         angularUIAce: ['angular', 'ace', 'aceModeJavaScript', 'aceTheme'],
         angularLoadingBar: ['angular'],
         angularFire: ['angular', 'firebase'],
-
-        angularAnimate: ['angular'],
-        angularAria: ['angular'],
-        angularMessages: ['angular'],
-        angularMaterial: ['angular', 'angularAnimate', 'angularAria', 'angularMessages'],
 
         mocha: { exports: 'mocha' },
         chai: { exports: 'chai' }

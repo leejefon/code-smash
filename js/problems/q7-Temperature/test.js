@@ -5,7 +5,7 @@ define(['mocha', 'chai'], function (mocha, chai) {
             var celcius = 30;
             var result = 86;
 
-            expect(c_To_F(celcius)).to.equal(result);
+            expect(c_to_f(celcius)).to.equal(result);
         });
 
         it("return celcius to fahrenheit with negative temperature", function () {
@@ -13,7 +13,7 @@ define(['mocha', 'chai'], function (mocha, chai) {
             var celcius2 = -5;
             var result2 = 23;
 
-            expect(c_To_F(celcius2)).to.equal(result2);
+            expect(c_to_f(celcius2)).to.equal(result2);
         });
     });
 });

@@ -93,7 +93,7 @@ define(['main/services'], function (MainServices) {
 
 								if (game.status === 'PLAYING') {
 									// NOTE: already got 2 players
-									reject();
+									reject('Game is Full');
 								} else {
 									currentPlayerId = 'player2';
 									availableGameObjects.forEach(function (gameObj) {
@@ -114,7 +114,7 @@ define(['main/services'], function (MainServices) {
 									});
 								}
 							} else {
-								reject();
+								reject('Game not found');
 							}
 						});
 					});
@@ -128,12 +128,14 @@ define(['main/services'], function (MainServices) {
 							$.each(game.players, function (playerId, player) {
 								currentGameObject.characters[player.character].setPlayer(playerId);
 							});
+							resolve();
 						});
 					});
 				},
 				gameUpdate: function (newState, oldState) {
 					if (!oldState.players.player2 && newState.players.player2) {
 						currentGameObject.characters[newState.players.player2.character].setPlayer('player2');
+						$('#waitingForPlayer').hide();
 					}
 
 					if (oldState.players.player1 && newState.players.player1 && oldState.players.player1.hp !== newState.players.player1.hp) {

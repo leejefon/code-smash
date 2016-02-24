@@ -5,7 +5,7 @@ define(['mocha', 'chai'], function (mocha, chai) {
             var array = ["test","testing","testingcase"];
             var result= "testingcase";
 
-            expect(longest_String(array)).to.equal(result);
+            expect(longest_string(array)).to.equal(result);
         });
 
         it("should return string only and not number", function(){
@@ -13,7 +13,7 @@ define(['mocha', 'chai'], function (mocha, chai) {
             var array2 = ["test", 2, 5, 43, 120];
             var result2 = "test";
 
-            expect(longest_String(array2)).to.equal(result2);
+            expect(longest_string(array2)).to.equal(result2);
         });
     });
 });
